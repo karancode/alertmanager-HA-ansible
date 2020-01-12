@@ -1,0 +1,16 @@
+[Unit]
+Description={{ service_name }}
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User={{ user_id }}
+Group={{ group_id }}
+Restart=always
+RestartSec=2
+StartLimitInterval=0
+Type=simple
+ExecStart=/usr/local/bin/alertmanager --config.file={{ config_file }} --storage.path={{ storage_path }} --data.retention=120h --log.level={{ alertmanager_log_level }} --web.listen-address=:{{ alertmanager_port }} --cluster.peer={{ cluster_peer }}:{{ alertmanager_mesh_port }}
+
+[Install]
+WantedBy=multi-user.target

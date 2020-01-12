@@ -1,0 +1,43 @@
+global:
+  resolve_timeout: 5m
+  http_config: {}
+  smtp_from: alertmanager@example.org
+  smtp_hello: localhost
+  smtp_smarthost: localhost:25
+  smtp_auth_username: alertmanager
+  smtp_auth_password: <secret>
+  smtp_require_tls: true
+  pagerduty_url: https://events.pagerduty.com/v2/enqueue
+  hipchat_api_url: https://api.hipchat.com/
+  opsgenie_api_url: https://api.opsgenie.com/
+  wechat_api_url: https://qyapi.weixin.qq.com/cgi-bin/
+  victorops_api_url: https://alert.victorops.com/integrations/generic/20131114/alert/
+route:
+  receiver: db-alert-email
+  group_by:
+    - env
+    - instance
+    - alertname
+    - type
+    - group
+    - job
+  group_wait: 30s
+  group_interval: 3m
+  repeat_interval: 3m
+receivers:
+  - name: db-alert-email
+    email_configs:
+      - send_resolved: true
+        to: xxx@xxx.com
+        from: alertmanager@example.org
+        hello: localhost
+        smarthost: localhost:25
+        auth_username: alertmanager
+        auth_password: <secret>
+        headers:
+          From: alertmanager@example.org
+          Subject: '{{ template "email.default.subject" . }}'
+          To: xxx@xxx.com
+        html: '{{ template "email.default.html" . }}'
+        require_tls: true
+templates: []

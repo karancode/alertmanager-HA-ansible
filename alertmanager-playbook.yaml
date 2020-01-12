@@ -1,0 +1,6 @@
+---
+- name: Alertmanager cluster
+  hosts: alertmanager
+  gather_facts: true
+  roles:
+    - alertmanager

@@ -1,0 +1,27 @@
+- name: Set alertmanager cluster peer
+  set_fact:
+    cluster_peer: " {{ groups.alertmanager[1] }}"
+  register: cluster_peer_result
+
+- name: Copy systemd init file
+  template:
+    dest: "/etc/systemd/system/alertmanager.service"
+    src: init.service.j2
+  notify: system_daemon_reload
+
+- name: Start alertmanager service
+  service:
+    name: alertmanager
+    state: restarted
+    enabled: yes
+
+- name: Wait before alertmanager starts
+  wait_for:
+    timeout: 15
+
+- name: Check if alertmanager is accessible
+  uri:
+    url: http://localhost:{{ alertmanager_port }}
+    method: GET
+    status_code: 200
+
