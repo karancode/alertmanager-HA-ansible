@@ -1,0 +1,3 @@
+- name: System daemon relaod
+  command: systemctl daemon-reload
+  listen: system_daemon_reload

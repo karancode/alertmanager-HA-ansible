@@ -1,0 +1,10 @@
+---
+version: "0.15.3"
+
+user_id: "ec2-user"
+group_id: "ec2-user"
+
+service_name: "alertmanager"
+config_file: "/etc/alertmanager/alertmanager.yaml"
+storage_path: "/data/alertmanager"
+alertmanager_log_level: "info"
